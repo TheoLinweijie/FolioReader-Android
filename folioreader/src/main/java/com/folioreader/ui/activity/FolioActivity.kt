@@ -428,6 +428,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         if (!isScrollStarted!!) {
             isScrollStarted = true
+            Toast.makeText(getApplicationContext(), "Auto Scroll Start ",
+                Toast.LENGTH_SHORT).show();
             runnableX = Runnable{
                 mFolioPageViewPager!!.setCurrentItem(mFolioPageViewPager!!.getCurrentItem() + 1)
                 handler!!.postDelayed(runnableX, 2000)
@@ -435,6 +437,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             handler!!.postDelayed(runnableX, 2000);
         } else {
             isScrollStarted = false
+            Toast.makeText(getApplicationContext(), "Auto Scroll End ",
+                Toast.LENGTH_SHORT).show();
             handler!!.removeCallbacks(runnableX);
 
         }
@@ -456,6 +460,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                     Toast.makeText(getApplicationContext(), "You have read " + timeOut + "s",
                         Toast.LENGTH_SHORT).show();
                     protectStart = false
+                    Toast.makeText(getApplicationContext(), "Protect mode off",
+                        Toast.LENGTH_SHORT).show();
                     timeOut = 0
                     handler!!.removeCallbacks(runnableTime);
                 } else {
