@@ -48,7 +48,7 @@ public class DictionaryFragment extends DialogFragment
 
     private MediaPlayer mediaPlayer;
     private RecyclerView dictResults;
-    private TextView noNetwork, dictionary, wikipedia, wikiWord, def;
+    private TextView noNetwork, dictionary, wikipedia, wikiWord, translate, def;
     private ProgressBar progressBar;
     private Button googleSearch;
     private LinearLayout wikiLayout;
@@ -87,6 +87,7 @@ public class DictionaryFragment extends DialogFragment
         googleSearch = (Button) view.findViewById(R.id.btn_google_search);
         dictionary = (TextView) view.findViewById(R.id.btn_dictionary);
         wikipedia = (TextView) view.findViewById(R.id.btn_wikipedia);
+
 
         wikiLayout = (LinearLayout) view.findViewById(R.id.ll_wiki);
         wikiWord = (TextView) view.findViewById(R.id.tv_word);

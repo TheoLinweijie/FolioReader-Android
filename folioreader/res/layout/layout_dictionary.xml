@@ -66,6 +66,8 @@
                     android:text="@string/wikipedia"
                     android:textColor="@drawable/content_highlight_text_selector"
                     android:textSize="16sp" />
+
+
             </LinearLayout>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>

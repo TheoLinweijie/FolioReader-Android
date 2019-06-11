@@ -116,6 +116,15 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var topActivity: Boolean? = null
     private var taskImportance: Int = 0
 
+
+    private var timeOut:Int = 0
+    private var timeDefault: Int = 5
+    private var protectStart: Boolean = false
+
+
+    private var isScrollStarted: Boolean? = false
+    private var runnableX: Runnable? = null
+    private var runnableTime: Runnable? = null
     companion object {
 
         @JvmField
@@ -403,11 +412,68 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
             showMediaController()
             return true
+        } else if (itemId == R.id.itemAutoScroll) {
+            Log.v(LOG_TAG, "-> onAutoScroll -> " + item.title+ " ," + isScrollStarted)
+            AutoScrollPage()
+            return true
+        } else if (itemId == R.id.itemPro) {
+            Log.v(LOG_TAG, "-> onAutoScroll -> " + item.title+ " ," + isScrollStarted)
+            ProtectMode()
+            return true
         }
 
         return super.onOptionsItemSelected(item)
     }
+    private fun AutoScrollPage() {
 
+        if (!isScrollStarted!!) {
+            isScrollStarted = true
+            runnableX = Runnable{
+                mFolioPageViewPager!!.setCurrentItem(mFolioPageViewPager!!.getCurrentItem() + 1)
+                handler!!.postDelayed(runnableX, 2000)
+            }
+            handler!!.postDelayed(runnableX, 2000);
+        } else {
+            isScrollStarted = false
+            handler!!.removeCallbacks(runnableX);
+
+        }
+
+
+    }
+
+    private fun ProtectMode() {
+
+        if (!protectStart) {
+            protectStart = true
+            Toast.makeText(getApplicationContext(), "Protect mode on",
+                Toast.LENGTH_SHORT).show();
+            runnableTime = Runnable{
+                timeOut+=1
+
+                // break
+                if (timeOut>=timeDefault){
+                    Toast.makeText(getApplicationContext(), "You have read " + timeOut + "s",
+                        Toast.LENGTH_SHORT).show();
+                    protectStart = false
+                    timeOut = 0
+                    handler!!.removeCallbacks(runnableTime);
+                } else {
+                    handler!!.postDelayed(runnableTime, 1000)
+
+                }
+            }
+            handler!!.postDelayed(runnableTime, 1000);
+        } else {
+            protectStart = false
+            Toast.makeText(getApplicationContext(), "Protect mode off",
+                Toast.LENGTH_SHORT).show();
+            handler!!.removeCallbacks(runnableTime);
+
+        }
+
+
+    }
     fun startContentHighlightActivity() {
 
         val intent = Intent(this@FolioActivity, ContentHighlightActivity::class.java)

@@ -1,6 +1,8 @@
 package com.folioreader.ui.view
-
+import android.content.Intent
 import android.content.Context
+import android.view.View
+import android.widget.EditText
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -41,6 +43,11 @@ import kotlinx.android.synthetic.main.text_selection.view.*
 import org.json.JSONObject
 import org.springframework.util.ReflectionUtils
 import java.lang.ref.WeakReference
+import com.folioreader.util.ProgressDialog.show
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
+import com.folioreader.ui.activity.TranslateActivity
+
 
 /**
  * @author by mahavir on 3/31/16.
@@ -105,8 +112,11 @@ class FolioWebView : WebView {
     private var lastTouchAction: Int = 0
     private var destroyed: Boolean = false
     private var handleHeight: Int = 0
-
     private var lastScrollType: LastScrollType? = null
+
+    private var alert: AlertDialog? = null
+    private var builder: AlertDialog.Builder? = null
+    private var mContext: Context? = null
 
     val contentHeightVal: Int
         get() = Math.floor((this.contentHeight * this.scale).toDouble()).toInt()
@@ -304,6 +314,14 @@ class FolioWebView : WebView {
             dismissPopupWindow()
             loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
         }
+        viewTextSelection.translateSelection.setOnClickListener {
+            dismissPopupWindow()
+            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+        }
+        viewTextSelection.exportSelection.setOnClickListener {
+            dismissPopupWindow()
+            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+        }
     }
 
     @JavascriptInterface
@@ -325,6 +343,14 @@ class FolioWebView : WebView {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> defineSelection -> $selectedText")
                 uiHandler.post { showDictDialog(selectedText) }
             }
+            R.id.translateSelection -> {
+                Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> translateSelection -> $selectedText")
+                showTransDialog(selectedText)
+            }
+            R.id.exportSelection -> {
+                // Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> exportSelection -> $selectedText")
+
+            }
             else -> {
                 Log.w(LOG_TAG, "-> onTextSelectionItemClicked -> unknown id = $id")
             }
@@ -337,6 +363,14 @@ class FolioWebView : WebView {
         bundle.putString(Constants.SELECTED_WORD, selectedText?.trim())
         dictionaryFragment.arguments = bundle
         dictionaryFragment.show(parentFragment.fragmentManager, DictionaryFragment::class.java.name)
+    }
+
+   private fun showTransDialog(selectedText: String?){
+
+       val intent = Intent(this.context, TranslateActivity::class.java).apply{
+           putExtra(Constants.SELECTED_WORD, selectedText?.trim())
+       }
+       this.context!!.startActivity(intent)
     }
 
     private fun onHighlightColorItemsClicked(style: HighlightStyle, isAlreadyCreated: Boolean) {

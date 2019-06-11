@@ -12,7 +12,7 @@
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="288dp"
+            android:layout_width="388dp"
             android:layout_height="wrap_content"
             android:background="?popUpWindowBackground">
 
@@ -45,7 +45,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/define" />
-
+                <TextView
+                    android:id="@+id/translateSelection"
+                    style="@style/TextViewTextSelector"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Translate"/>
+                <TextView
+                    android:id="@+id/exportSelection"
+                    style="@style/TextViewTextSelector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Export" />
             </LinearLayout>
 
             <View
